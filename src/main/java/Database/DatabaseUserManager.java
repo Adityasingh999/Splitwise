@@ -1,6 +1,5 @@
 package Database;
 import models.FirstUser;
-import models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import web.UserManager;
@@ -14,9 +13,7 @@ public class DatabaseUserManager implements UserManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseUserManager.class);
 
-    public List<User> listUsers() {
-        return null;
-    }
+
         /*List<User> userList = new ArrayList<>();
         Connection connection = DatabaseConnection.getConnectionNonSingleTon();
 
@@ -52,16 +49,12 @@ public class DatabaseUserManager implements UserManager {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM firstuser");
             while(resultSet.next()) {// points to Row ON each iteration
                 //ID, NAME, AGE, EmployeeD
-                int Id= resultSet.getInt("id");
-                String Name = resultSet.getString("name");
-                int phonenumber = resultSet.getInt("phonenumber");
-                String email = resultSet.getString("email");
-                int count=resultSet.getInt("count");
+
                 int expense=resultSet.getInt("expense");
-                int userid=resultSet.getInt("userid");
+                int count=resultSet.getInt("count");
                 int paidto= resultSet.getInt("paidto");
 
-                userList.add(new FirstUser(Id, Name, phonenumber, email,count,expense,userid,paidto));
+                userList.add(new FirstUser(count,expense,paidto));
                 LOGGER.info("Employee list is {}", userList);
             }
         } catch (SQLException e) {
@@ -71,9 +64,6 @@ public class DatabaseUserManager implements UserManager {
             DatabaseConnection.closeConnection(connection);
         }
         return userList;
-    }
-    public int addUser(User user) {
-        return 0;
     }
         //TDOO
         /*Connection connection = DatabaseConnection.getConnectionNonSingleTon();
@@ -106,16 +96,13 @@ public class DatabaseUserManager implements UserManager {
         //TDOO
         Connection connection = DatabaseConnection.getConnectionNonSingleTon();
         try {
-            String sql = "INSERT INTO  firstuser(id, name,phonenumber,email,count,expense,userid,paidto) VALUES (?,?, ?,?,?,?,?,?)";
+            String sql = "INSERT INTO  firstuser(expense,count,paidto) VALUES (?,?,?)";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, user.getId());
-            statement.setString(2, user.getName());
-            statement.setLong(3, user.getPhonenumber());
-            statement.setString(4, user.getEmail());
-            statement.setInt(5,user.getCount());
-            statement.setInt(6,user.getExpense());
-            statement.setInt(7,user.getUserid());
-            statement.setInt(8,user.getPaidto());
+
+
+            statement.setInt(1,user.getExpense());
+            statement.setInt(2,user.getCount());
+            statement.setInt(3,user.getPaidto());
 
 
 
@@ -130,11 +117,11 @@ public class DatabaseUserManager implements UserManager {
         finally {
             DatabaseConnection.closeConnection(connection);
         }
-        return user.getId();
+        return user.getPaidto();
     }
 
 
-    public void deleteUser(int Id) {
+    /*public void deleteUser(int Id) {
         Connection connection = DatabaseConnection.getConnectionNonSingleTon();
         try {
             String sql = "DELETE FROM firstuser WHERE id=?";
@@ -142,6 +129,8 @@ public class DatabaseUserManager implements UserManager {
             statement.setInt(1, Id);
 
             int rowsDeleted = statement.executeUpdate();
+
+
             if (rowsDeleted > 0) {
                 System.out.println("An Employee was deleted successfully!");
             }
@@ -152,27 +141,21 @@ public class DatabaseUserManager implements UserManager {
         finally {
             DatabaseConnection.closeConnection(connection);
         }
-    }
+    }*/
 
-    @Override
+    /*@Override
     public List<User> searchUsers(String keyword) {
         return null;
-    }
+    }*/
 
-    public void updateUser(FirstUser user){
+    /*public void updateUser(FirstUser user){
         Connection connection = DatabaseConnection.getConnectionNonSingleTon();
         try {
-            String sql = "UPDATE firstuser SET name=?,phonenumber=?,email=?,count=?,expense=?,userid=?,paidto=? WHERE empid=?";
+            String sql = "UPDATE firstuser SET paidto=? WHERE expense=?";
 
             PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setString(1,user.getName());
-            statement.setLong(2, user.getPhonenumber());
-            statement.setString(3, user.getEmail());
-            statement.setInt(4, user.getCount());
-            statement.setInt(5, user.getExpense());
             int amount=user.getExpense()/user.getCount();
-            statement.setInt(6,amount);
+            statement.setInt(1,amount);
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
                 System.out.println("An existing Employee was updated successfully!");
@@ -189,7 +172,7 @@ public class DatabaseUserManager implements UserManager {
 
 
 
-    }
+    }*/
 
 
 }

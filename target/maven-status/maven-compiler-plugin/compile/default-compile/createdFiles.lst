@@ -4,7 +4,6 @@ Servlet\FirstUserServlet.class
 UserFactory\PersistenceType.class
 Database\Main.class
 Database\DatabaseConnection.class
-models\User.class
 models\FirstUser.class
 UserFactory\UserInstanceFactory$1.class
 web\UserManager.class

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link rel="stylesheet" href="./styles.css">
+<!--     <script type="text/javascript" src="billSplitter.js"></script>-->
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+          SplitWise
+        </div>
+      
+        <form class="insert">
+          <label id="totalL"><i class="fas fa-coins"></i> How much?</label>
+          <input type="number" id="total" placeholder="add the total">
+      
+           <label id="totalLl"><i class="fas fa-users"></i> How many?</label>
+          <input type="number" id="people" placeholder="add the number of people">
+      
+          <label id="tipL"><i class="fas fa-heart"></i><button id="addTip"></button></label>
+          <div id="tipInput">
+            <input type="number" id="tipPercent" placeholder="add % of the total">
+          </div>
+          <div class="buttonSpace">
+            <button id="splitBtn" onclick="myFunction()">Split!</button>
+            
+            <button id="resetBtn">Reset</button>
+          </div>
+          <div id="perPerson">0</div>
+        </form>
+      </div>
+      
+
+    <script>
+        const splitting = () => {
+    let total = parseInt(document.querySelector('#total').value);
+
+    let people = parseInt(document.querySelector('#people').value);
+    let tipPercent = document.querySelector('#tipPercent');
+
+
+    if (tipPercent.value !== "") {
+      let calcPercent = parseInt(tipPercent.value)
+      const totalWithTip = total + (calcPercent * total) / 100;
+      document.querySelector('#perPerson').innerHTML = (totalWithTip / people).toFixed(2);
+    }
+    else {
+      const result = total / people;
+      document.querySelector('#perPerson').innerHTML = result.toFixed(2);
+    }
+   }
+
+  document.querySelector('#addTip').addEventListener('click', (e) => {
+    e.preventDefault();
+    showTipInput();
+  })
+
+  const showTipInput = () => {
+    const tipBtns = document.querySelector('#tipInput')
+    if (tipBtns.style.display === "block") {
+      tipBtns.style.display = "none"
+    } else {
+      tipBtns.style.display = "block"
+    }
+  }
+
+
+  const splitBtn = document.querySelector('#splitBtn')
+    splitBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      splitting();
+  })
+
+  document.querySelector('#resetBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.querySelector('form').reset();
+    document.querySelector('#perPerson').innerHTML = "0"
+  })
+  function myFunction(){
+    var myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+let total = parseInt(document.querySelector('#total').value);
+    let people = parseInt(document.querySelector('#people').value);
+    const result = total / people;
+var raw = JSON.stringify({
+  "expense": total,
+  "count": people,
+  "paidto": result
+});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch("http://3.19.32.109:8080/demo/users", requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
+  }
+
+      </script>
+      
+</body>
+</html>

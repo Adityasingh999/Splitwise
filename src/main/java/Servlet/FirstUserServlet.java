@@ -35,7 +35,7 @@ public class FirstUserServlet extends HttpServlet {
         }
     }
 
-    @Override
+    /*@Override
     protected final void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             userManager.deleteUser(Integer.valueOf(req.getParameter("Id")));
@@ -43,12 +43,18 @@ public class FirstUserServlet extends HttpServlet {
             resp.setStatus(500);
             resp.getWriter().write("Internal server error");
         }
-    }
-    @Override
+    }*/
+    /*@Override
     protected void doPut (HttpServletRequest request, HttpServletResponse response) throws IOException {
         //TODO Get Persistance type from request or configuration/ property file or environment
-        userManager.updateUser(new FirstUser());
-        response.getWriter().write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString());
-    }
+        FirstUser user1 = objectMapper.readValue(request.getReader(), FirstUser.class);
+        try {
+            userManager.updateUser(user1);
+        }
+        catch (Exception e) {
+            response.setStatus(500);
+            response.getWriter().write("Internal server error");
+        }
+    }*/
 
 }
